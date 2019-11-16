@@ -13,6 +13,8 @@ import {
   isValue,
 } from './shared/propTypes';
 
+const className = 'react-calendar__month-view';
+
 function getCalendarTypeFromLocale(locale) {
   switch (locale) {
     case 'en-CA':
@@ -76,19 +78,21 @@ export default function MonthView(props) {
     formatShortWeekday,
     onClickWeekNumber,
     showWeekNumbers,
+    weekNumbersLabel,
     ...childProps
   } = props;
 
   const calendarType = calendarTypeProps || getCalendarTypeFromLocale(locale);
 
-  function renderWeekdays() {
+  function renderWeekNumbersLabel() {
+    if (!showWeekNumbers || !weekNumbersLabel) {
+      return null;
+    }
+
     return (
-      <Weekdays
-        calendarType={calendarType}
-        formatShortWeekday={formatShortWeekday}
-        locale={locale}
-        onMouseLeave={onMouseLeave}
-      />
+      <div className={`${className}__weekNumbersLabel`}>
+        {weekNumbersLabel}
+      </div>
     );
   }
 
@@ -108,6 +112,17 @@ export default function MonthView(props) {
     );
   }
 
+  function renderWeekdays() {
+    return (
+      <Weekdays
+        calendarType={calendarType}
+        formatShortWeekday={formatShortWeekday}
+        locale={locale}
+        onMouseLeave={onMouseLeave}
+      />
+    );
+  }
+
   function renderDays() {
     return (
       <Days
@@ -116,8 +131,6 @@ export default function MonthView(props) {
       />
     );
   }
-
-  const className = 'react-calendar__month-view';
 
   return (
     <div
@@ -132,7 +145,10 @@ export default function MonthView(props) {
           alignItems: 'flex-end',
         }}
       >
-        {renderWeekNumbers()}
+        <div>
+          {renderWeekNumbersLabel()}
+          {renderWeekNumbers()}
+        </div>
         <div
           style={{
             flexGrow: 1,
@@ -163,4 +179,5 @@ MonthView.propTypes = {
   showWeekNumbers: PropTypes.bool,
   value: isValue,
   valueType: PropTypes.string,
+  weekNumbersLabel: PropTypes.string,
 };
