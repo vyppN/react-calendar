@@ -69,9 +69,11 @@ export default class Tile extends Component {
       >
         {formatAbbr
           ? (
-            <abbr aria-label={formatAbbr(locale, date)}>
-              {children}
-            </abbr>
+            <div>
+              <abbr aria-label={formatAbbr(locale, date)}>
+                {children}
+              </abbr>
+            </div>
           )
           : children}
         {tileContent}
